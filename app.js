@@ -11,13 +11,14 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
-
-// mongoose.connect("mongodb+srv://admin-abhinav:Pandey123@cluster0.b6nmf.mongodb.net/earnbazaar");
+// mongoose.connect("mongodb+srv://abhinavpandey:<Pandey123>@cluster0.gu0am.mongodb.net/cluster0?retryWrites=true&w=majority");
 mongoose.connect("mongodb://localhost:27017/earnbazaar", {useNewUrlParser: true});
 
 const postSchema = {
   title: String,
-  content: String
+  content: String,
+  price:String,
+  time: String
 };
 
 const Post = mongoose.model("Post", postSchema);
@@ -53,13 +54,15 @@ app.get("/compose", function(req, res){
 app.post("/compose", function(req, res){
   const post = new Post({
     title: req.body.postTitle,
-    content: req.body.postBody
+    content: req.body.postBody,
+    price: req.body.postPrice,
+    time: req.body.postTime
   });
 
 
   post.save(function(err){
     if (!err){
-        res.redirect("/");
+        res.redirect("/page1");
     }
   });
 });
@@ -71,7 +74,9 @@ const requestedPostId = req.params.postId;
   Post.findOne({_id: requestedPostId}, function(err, post){
     res.render("post", {
       title: post.title,
-      content: post.content
+      content: post.content,
+      price: post.price,
+      time:post.time
     });
   });
 
