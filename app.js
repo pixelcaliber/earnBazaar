@@ -14,7 +14,8 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb+srv://admin-abhinav:Pandey123@cluster0.b6nmf.mongodb.net/blogDB");
+// mongoose.connect("mongodb+srv://admin-abhinav:Pandey123@cluster0.b6nmf.mongodb.net/earnbazaar");
+mongoose.connect("mongodb://localhost:27017/earnbazaar", {useNewUrlParser: true});
 
 const postSchema = {
   title: String,
@@ -25,8 +26,22 @@ const Post = mongoose.model("Post", postSchema);
 
 app.get("/", function(req, res){
 
+    res.render("landing", {  
+    });
+});
+app.get("/page1", function(req, res){
+
   Post.find({}, function(err, posts){
     res.render("home", {
+      startingContent: homeStartingContent,
+      posts: posts
+      });
+  });
+});
+app.get("/page2", function(req, res){
+
+  Post.find({}, function(err, posts){
+    res.render("home2", {
       startingContent: homeStartingContent,
       posts: posts
       });
